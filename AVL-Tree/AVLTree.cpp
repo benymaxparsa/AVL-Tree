@@ -51,8 +51,61 @@ void AVLTree::add(Node* parent, Node* newNode)
 
 void AVLTree::checkBalance(Node* node)
 {
+	if ((getHeight(node->left) - getHeight(node->right) > 1) || (getHeight(node->left) - getHeight(node->right) < -1))
+	{
+		reBalance(node);
+	}
+	if (!node->parent)
+		return;
+	checkBalance(node->parent);
 }
 
 void AVLTree::reBalance(Node* node)
 {
+	if (getHeight(node->left) - getHeight(node->right) > 1)
+	{
+		if (getHeight(node->left) > getHeight(node->right))
+			node = rightRotate(node);
+		else
+			node = leftRightRotate(node);
+	}
+	else
+	{
+		if (getHeight(node->right) > getHeight(node->left))
+			node = leftRotate(node);
+		else
+			node = rightLeftRotate(node);
+	}
+	if (!node->parent)
+		root = node;
+}
+
+int AVLTree::getHeight(Node* node)
+{
+	if (node == NULL)
+		return 0;
+	int leftH = getHeight(node->left);
+	int rightH = getHeight(node->right);
+
+	return 1 + max(leftH, rightH);
+}
+
+Node* AVLTree::rightRotate(Node* node)
+{
+	return nullptr;
+}
+
+Node* AVLTree::leftRightRotate(Node* node)
+{
+	return nullptr;
+}
+
+Node* AVLTree::leftRotate(Node* node)
+{
+	return nullptr;
+}
+
+Node* AVLTree::rightLeftRotate(Node* node)
+{
+	return nullptr;
 }
