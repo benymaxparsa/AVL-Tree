@@ -22,7 +22,7 @@ void AVLTree::add(int data)
 	add(root, node);
 }
 
-void AVLTree::add(Node* parent, Node* newNode)
+void AVLTree::add(Node* parent,Node* newNode)
 {
 	if (newNode->data > parent->data)
 	{
@@ -64,14 +64,14 @@ void AVLTree::reBalance(Node* node)
 {
 	if (getHeight(node->left) - getHeight(node->right) > 1)
 	{
-		if (getHeight(node->left) > getHeight(node->right))
+		if (getHeight(node->left->left) > getHeight(node->left->right))
 			node = rightRotate(node);
 		else
 			node = leftRightRotate(node);
 	}
 	else
 	{
-		if (getHeight(node->right) > getHeight(node->left))
+		if (getHeight(node->right->right) > getHeight(node->right->left))
 			node = leftRotate(node);
 		else
 			node = rightLeftRotate(node);
@@ -84,10 +84,15 @@ int AVLTree::getHeight(Node* node)
 {
 	if (node == NULL)
 		return 0;
-	int leftH = getHeight(node->left);
-	int rightH = getHeight(node->right);
+	else
+	{
+		int lDepth = getHeight(node->left);
+		int rDepth = getHeight(node->right);
 
-	return 1 + max(leftH, rightH);
+		if (lDepth > rDepth)
+			return(lDepth + 1);
+		else return(rDepth + 1);
+	}
 }
 
 Node* AVLTree::rightRotate(Node* node)
@@ -95,6 +100,7 @@ Node* AVLTree::rightRotate(Node* node)
 	Node* temp = node->left;
 	node->left = temp->right;
 	temp->right = node;
+	temp->parent = node->parent;
 	return temp;
 }
 
@@ -109,6 +115,8 @@ Node* AVLTree::leftRotate(Node* node)
 	Node* temp = node->right;
 	node->right = temp->left;
 	temp->left = node;
+	temp->parent = node->parent;
+	node->parent = temp;
 	return temp;
 }
 
@@ -117,3 +125,42 @@ Node* AVLTree::rightLeftRotate(Node* node)
 	node->right = rightRotate(node->right);
 	return leftRotate(node);
 }
+
+void AVLTree::showTree()
+{
+	printBT(root);
+}
+
+void AVLTree::showNum()
+{
+	print(root);
+}
+
+void AVLTree::print(Node* root) {
+	if (root == NULL) {
+		return;
+	}
+	cout << root->data << " ";
+	print(root->left);
+	print(root->right);
+	return;
+}
+
+void AVLTree::printBT(Node* node)
+{
+	printBT("", node, false);
+}
+
+void AVLTree::printBT(const string& prefix, Node* node, bool isLeft)
+{
+	if (node)
+	{
+		cout << prefix;
+		cout << (isLeft ? "├──" : "└──");
+		cout << node->data << endl;
+
+		printBT(prefix + (isLeft ? "│   " : "    "), node->left, true);
+		printBT(prefix + (isLeft ? "│   " : "    "), node->right, false);
+	}
+}
+

@@ -3,11 +3,14 @@
 int main()
 {
 	AVLTree* avl = new AVLTree();
-	avl->add(3);
-	avl->add(5);
-	avl->add(0);
-	avl->add(1);
-	avl->add(9);
+	avl->add(4);
+	avl->add(8);
+	avl->add(6);
+	//avl->add(1);
+	//avl->add(9);
+	//avl->add(10);
+
+	avl->showTree();
 
 	return 0;
 }
