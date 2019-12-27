@@ -92,20 +92,28 @@ int AVLTree::getHeight(Node* node)
 
 Node* AVLTree::rightRotate(Node* node)
 {
-	return nullptr;
+	Node* temp = node->left;
+	node->left = temp->right;
+	temp->right = node;
+	return temp;
 }
 
 Node* AVLTree::leftRightRotate(Node* node)
 {
-	return nullptr;
+	node->left = leftRotate(node->left);
+	return rightRotate(node);
 }
 
 Node* AVLTree::leftRotate(Node* node)
 {
-	return nullptr;
+	Node* temp = node->right;
+	node->right = temp->left;
+	temp->left = node;
+	return temp;
 }
 
 Node* AVLTree::rightLeftRotate(Node* node)
 {
-	return nullptr;
+	node->right = rightRotate(node->right);
+	return leftRotate(node);
 }
