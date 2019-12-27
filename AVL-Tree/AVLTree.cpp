@@ -101,6 +101,7 @@ Node* AVLTree::rightRotate(Node* node)
 	node->left = temp->right;
 	temp->right = node;
 	temp->parent = node->parent;
+	node->parent = temp;
 	return temp;
 }
 
