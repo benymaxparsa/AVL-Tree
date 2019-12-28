@@ -22,6 +22,26 @@ void AVLTree::add(int data)
 	add(root, node);
 }
 
+Node* AVLTree::findMin(Node* t)
+{
+	if (t == NULL)
+		return NULL;
+	else if (t->left == NULL)
+		return t;
+	else
+		return findMin(t->left);
+}
+
+Node* AVLTree::findMax(Node* t)
+{
+		if (t == NULL)
+			return NULL;
+		else if (t->right == NULL)
+			return t;
+		else
+			return findMax(t->right);
+}
+
 void AVLTree::add(Node* parent,Node* newNode)
 {
 	if (newNode->data > parent->data)
@@ -49,6 +69,34 @@ void AVLTree::add(Node* parent,Node* newNode)
 	checkBalance(newNode);
 }
 
+Node* AVLTree::remove(int x, Node* t)
+{
+	Node* temp;
+	if (t == NULL)
+		return NULL;
+	else if (x < t->data)
+		t->left = remove(x, t->left);
+	else if (x > t->data)
+		t->right = remove(x, t->right);
+	else if (t->left && t->right)
+	{
+		temp = findMin(t->right);
+		t->data = temp->data;
+		t->right = remove(t->data, t->right);
+	}
+	else
+	{
+		temp = t;
+		if (t->left == NULL)
+			t = t->right;
+		else if (t->right == NULL)
+			t = t->left;
+		delete temp;
+	}
+
+	return t;
+}
+
 void AVLTree::checkBalance(Node* node)
 {
 	if ((getHeight(node->left) - getHeight(node->right) > 1) || (getHeight(node->left) - getHeight(node->right) < -1))
@@ -62,37 +110,47 @@ void AVLTree::checkBalance(Node* node)
 
 void AVLTree::reBalance(Node* node)
 {
-	if (getHeight(node->left) - getHeight(node->right) > 1)
-	{
-		if (getHeight(node->left->left) > getHeight(node->left->right))
+	int balanceFactor = Diff(node);
+
+	if (balanceFactor > 1) {
+		if (Diff(node->left) > 0) {
 			node = rightRotate(node);
-		else
+		}
+		else {
 			node = leftRightRotate(node);
+		}
 	}
-	else
-	{
-		if (getHeight(node->right->right) > getHeight(node->right->left))
-			node = leftRotate(node);
-		else
+	else if (balanceFactor < -1) {
+		if (Diff(node->right) > 0) {
 			node = rightLeftRotate(node);
+		}
+		else {
+			node = leftRotate(node);
+		}
 	}
-	if (!node->parent)
-		root = node;
+
 }
 
 int AVLTree::getHeight(Node* node)
 {
-	if (node == NULL)
+	if (!node) {
 		return 0;
-	else
-	{
-		int lDepth = getHeight(node->left);
-		int rDepth = getHeight(node->right);
-
-		if (lDepth > rDepth)
-			return(lDepth + 1);
-		else return(rDepth + 1);
 	}
+	if (!node->left && !node->right) {
+		return 1;
+	}
+	else {
+		int l = getHeight(node->left);
+		int r = getHeight(node->right);
+		return (1 + ((l > r) ? l : r));
+	}
+}
+
+int AVLTree::Diff(Node* temp) {
+	int l_GetHeight = getHeight(temp->left);
+	int r_GetHeight = getHeight(temp->right);
+	int b_factor = (l_GetHeight - r_GetHeight);
+	return b_factor;
 }
 
 Node* AVLTree::rightRotate(Node* node)
@@ -101,6 +159,7 @@ Node* AVLTree::rightRotate(Node* node)
 	node->left = temp->right;
 	temp->right = node;
 	temp->parent = node->parent;
+	node->parent = temp;
 	return temp;
 }
 
@@ -134,6 +193,11 @@ void AVLTree::showTree()
 void AVLTree::showNum()
 {
 	print(root);
+}
+
+void AVLTree::remove(int x)
+{
+	root = remove(x, root);
 }
 
 void AVLTree::print(Node* root) {

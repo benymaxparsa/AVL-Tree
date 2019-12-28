@@ -12,7 +12,7 @@ public:
 	void add(int data);
 	void showTree();
 	void showNum();
-	
+	void remove(int x);
 
 private:
 	Node* root;
@@ -28,6 +28,10 @@ private:
 	void printBT(Node* node);
 	void printBT(const string& prefix, Node* node, bool isLeft);
 	void print(Node* root);
+	int Diff(Node* root);
+	Node* remove(int x, Node* t);
+	Node* findMin(Node* t);
+	Node* findMax(Node* t);
 };
 
 
