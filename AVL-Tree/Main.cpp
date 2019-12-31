@@ -16,9 +16,11 @@ int main()
 	avl->add(4);
 	avl->showTree();
 	avl->add(13);
-
+	avl->showTree();
+	avl->remove(14);
 	avl->showTree();
 	avl->showNum();
+	
 
 	return 0;
 }

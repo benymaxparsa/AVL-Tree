@@ -13,6 +13,7 @@ public:
 	void showTree();
 	void showNum();
 	void remove(int x);
+	void min();
 
 private:
 	Node* root;

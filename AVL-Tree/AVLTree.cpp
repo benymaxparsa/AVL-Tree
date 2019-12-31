@@ -49,8 +49,9 @@ void AVLTree::add(Node* parent,Node* newNode)
 		if (!parent->right)
 		{
 			parent->right = newNode;
-			newNode->parent = parent;
+			parent->parent = parent;
 			currentSize++;
+			checkBalance(newNode);
 		}
 		else
 			add(parent->right, newNode);
@@ -60,13 +61,14 @@ void AVLTree::add(Node* parent,Node* newNode)
 		if(!parent->left)
 		{
 			parent->left = newNode;
-			newNode->parent = parent;
+			parent->parent = parent;
 			currentSize++;
+			checkBalance(newNode);
 		}
 		else
 			add(parent->left, newNode);
 	}
-	checkBalance(newNode);
+	
 }
 
 Node* AVLTree::remove(int x, Node* t)
@@ -110,7 +112,7 @@ void AVLTree::checkBalance(Node* node)
 
 void AVLTree::reBalance(Node* node)
 {
-	int balanceFactor = Diff(node);
+	int balanceFactor = Diff(node) ;
 
 	if (balanceFactor > 1) {
 		if (Diff(node->left) > 0) {
@@ -198,6 +200,11 @@ void AVLTree::showNum()
 void AVLTree::remove(int x)
 {
 	root = remove(x, root);
+}
+
+void AVLTree::min()
+{
+	findMin(root);
 }
 
 void AVLTree::print(Node* root) {
